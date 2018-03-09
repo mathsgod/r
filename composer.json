@@ -1,0 +1,17 @@
+{
+    "name": "hostlink/r",
+    "description": "raymond core",
+    "autoload": {
+        "psr-4": {
+            "R\\": "class"
+        }
+    },
+    "require": {
+        "php": ">=5.4",
+        "hostlink/r-psr7": "*"
+    },
+    "type": "library",
+    "license": "proprietary",
+    "minimum-stability": "stable",
+    "version": "1.2.3"
+}
