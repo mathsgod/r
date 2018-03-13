@@ -24,8 +24,10 @@ class System
         return ServerRequest::FromEnv();
     }
 
-    public function __construct($root, $loader, $logger)
+    public function __construct($root, $loader, $logger = null)
     {
+        if (!$root) throw new \Exception("root cannot be empty");
+        if (!$loader) throw new \Exception("loader cannot be empty");
         self::$r = $this;
         $this->root = $root;
         $this->loader = $loader;
@@ -38,7 +40,7 @@ class System
         }
     }
 
-    public static function Run($root, $loader, $logger)
+    public static function Run($root, $loader, $logger = null)
     {
         session_start();
 
@@ -58,7 +60,7 @@ class System
             $request = $request->withMethod($route->method);
             $response = $page($request, $response);
 
-            if ( ($statusCode = $response->getStatusCode()) != 200) {
+            if (($statusCode = $response->getStatusCode()) != 200) {
                 header($request->getServerParams()["SERVER_PROTOCOL"] . " " . $statusCode . " " . $response->getReasonPhrase());
             }
 
@@ -71,14 +73,14 @@ class System
 
     public static function Root()
     {
-        $r = is_a($this, __class__) ? $this : self::$r;
+        $r = self::$r;
         return $r->root;
     }
 
     public static function Config($name, $category)
     {
 
-        $r = is_a($this, __class__) ? $this : self::$r;
+        $r = self::$r;
         if (func_num_args() == 1) {
             return $r->config[$name];
         }
@@ -88,17 +90,20 @@ class System
         return $r->config;
     }
 
-    public function DB()
+    public function db()
     {
         if ($this->db) {
             return $this->db;
         }
+
         $db = $this->config["database"];
         if (!$db["charset"]) {
             $db["charset"] = "utf8mb4";
         }
 
         $this->db = new \DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
+
+
 
         if (isset($db["ERRMODE"])) {
             $this->db->setAttribute(\PDO::ATTR_ERRMODE, $db["ERRMODE"]);
