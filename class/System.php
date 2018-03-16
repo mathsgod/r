@@ -26,6 +26,7 @@ class System
 
     public function __construct($root, $loader, $logger = null)
     {
+        $root = realpath($root);
         if (!$root) throw new \Exception("root cannot be empty");
         if (!$loader) throw new \Exception("loader cannot be empty");
         self::$r = $this;
