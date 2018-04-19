@@ -49,5 +49,3 @@ class Util {
         return $password;
     }
 }
-
-?>

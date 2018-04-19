@@ -4,23 +4,20 @@ namespace R;
 
 use R\Psr7\Stream;
 use R\Psr7\JSONStream;
+use R\Psr7\Request;
+use R\Psr7\Response;
 
 class Page
 {
     protected $request;
     protected $response;
 
-    public function __construct()
+    public function __construct(App $app)
     {
         $class = get_called_class();
-        $loader = System::Loader();
-        $this->file = $loader->findFile($class);
-        $this->root = System::Root();
-    }
-
-    public function setHeader($name, $value)
-    {
-        $this->response = $this->response->withHeader($name, $value);
+        $this->app = $app;
+        $this->file = $app->loader->findFile($class);
+        $this->root = $app->root;
     }
 
     public function write($element)
@@ -28,7 +25,7 @@ class Page
         $this->response->getBody()->write($element);
     }
 
-    public function __invoke($request, $response)
+    public function __invoke(Request $request, Response $response)
     {
         if (!$request) {
             throw new \InvalidArgumentException("request cannot be null");
@@ -46,6 +43,10 @@ class Page
         $params = $this->request->getQueryParams();
         try {
             $data = [];
+            if ($method == "__invoke" || $method == "write") {
+                return $this->response->withBody(new Stream("cannot use method: $method"));
+            };
+
             foreach ($r_class->getMethod($method)->getParameters() as $param) {
                 $name = $param->name;
 
@@ -77,7 +78,7 @@ class Page
         } catch (\ReflectionException $e) {
             $ret = call_user_func_array([$this, $method], $params);
         }
-        
+
 
         if ($ret !== null) {
             $this->response->setHeader("Content-Type", "application/json; charset=UTF-8");

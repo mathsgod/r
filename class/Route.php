@@ -22,7 +22,7 @@ class Route
 
         if (!$this->no_index) {
             $path = implode("/", $qs);
-            if (file_exists($file = $root . $basePath . "pages/" . $path . "/index.php")) {
+            if (file_exists($file = $root . $basePath . "/pages/" . $path . "/index.php")) {
                 $this->file = $file;
                 $this->path = implode("/", $qs) . "/index";
                 $this->class = "_" . implode("_", $qs) . "_index";
@@ -36,7 +36,7 @@ class Route
         while (count($qs)) {
             $path = implode("/", $qs);
 
-            if (file_exists($file = $root . $basePath . "pages/" . $path . ".php")) {
+            if (file_exists($file = $root . $basePath . "/pages/" . $path . ".php")) {
                 $this->file = $file;
                 $this->path = $path;
                 $this->class = "_" . implode("_", $qs);
@@ -48,7 +48,7 @@ class Route
         }
 
         if (!$this->class) { //fall back to index
-            if (file_exists($file = $root . $basePath . "pages/index.php")) {
+            if (file_exists($file = $root . $basePath . "/pages/index.php")) {
                 $this->file = $file;
                 $path = implode("/", $qs);
                 $this->class = "_index";

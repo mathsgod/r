@@ -43,33 +43,14 @@ class System
 
     public static function Run($root, $loader, $logger = null)
     {
-        session_start();
-
-        new static($root, $loader, $logger);
-
-        $request = static::ServerRequest();
-
-        $router = static::Router();
-
-        $route = $router->getRoute($request, $loader);
-
-        $request = $request->withAttribute("route", $route);
-
-        if ($class = $route->class) {
-            $page = new $class();
-            $response = new Psr7\Response(200);
-            $request = $request->withMethod($route->method);
-            $response = $page($request, $response);
-
-            if (($statusCode = $response->getStatusCode()) != 200) {
-                header($request->getServerParams()["SERVER_PROTOCOL"] . " " . $statusCode . " " . $response->getReasonPhrase());
-            }
-
-            foreach ($response->getHeaders() as $name => $values) {
-                header($name . ": " . implode(", ", $values));
-            }
-            file_put_contents("php://output", (string)$response);
-        }
+        echo '
+please use follow code
+<pre>
+$app=new R\App();
+$app->run();
+</pre>
+';
+        exit();
     }
 
     public static function Root()
