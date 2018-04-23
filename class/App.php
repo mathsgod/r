@@ -14,7 +14,7 @@ class App
 
     public function __construct($root, $loader, $logger)
     {
-        $this->loader = new \Composer\Autoload\ClassLoader();
+        $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
 
