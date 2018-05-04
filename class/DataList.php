@@ -83,7 +83,7 @@ class DataList extends \ArrayIterator implements \JsonSerializable
     {
         return new DataList(array_diff($this->getArrayCopy(), (array )$array));
     }
-    
+
     public function udiff($array, $callback)
     {
         return new DataList(array_udiff($this->getArrayCopy(), (array )$array, $callback));
@@ -91,7 +91,7 @@ class DataList extends \ArrayIterator implements \JsonSerializable
 
     public function substract($array, $callback)
     {
-        $data=$this->filter(function ($o) use ($array, $callback) {
+        $data = $this->filter(function ($o) use ($array, $callback) {
             foreach ($array as $a) {
                 if ($callback($o, $a)) {
                     return false;
@@ -101,10 +101,11 @@ class DataList extends \ArrayIterator implements \JsonSerializable
         });
         return $data;
     }
-    
-    public function pop(){
-        $last=$this->count()-1;
-        $ret=$this->offsetGet($last);
+
+    public function pop()
+    {
+        $last = $this->count() - 1;
+        $ret = $this->offsetGet($last);
         $this->offsetUnset($last);
         return $ret;
     }
