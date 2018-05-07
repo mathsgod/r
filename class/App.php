@@ -36,6 +36,7 @@ class App implements LoggerAwareInterface
             }
 
             $this->db = new \DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
+            Model::$__db = $this->db;
 
             if (isset($db["ERRMODE"])) {
                 $this->db->setAttribute(\PDO::ATTR_ERRMODE, $db["ERRMODE"]);
@@ -45,8 +46,6 @@ class App implements LoggerAwareInterface
 
     public function run()
     {
-
-
         session_start();
 
         $route = $this->router->getRoute($this->request, $this->loader);

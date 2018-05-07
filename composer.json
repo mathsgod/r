@@ -14,10 +14,12 @@
     },
     "require": {
         "php": ">=5.4",
-        "hostlink/r-psr7": "2.*"
+        "hostlink/r-psr7": "2.*",
+        "psr/log": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "hostlink/r-db": "1.*"
     },
     "suggest": {
         "hostlink/r-db": "*"
@@ -25,7 +27,7 @@
     "type": "library",
     "license": "proprietary",
     "minimum-stability": "stable",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "authors": [
         {
             "name": "Raymond Chong",

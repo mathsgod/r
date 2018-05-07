@@ -4,10 +4,11 @@ namespace R;
 
 abstract class Model extends \DB\Model
 {
+    public static $__db;
+
     public static function __db()
     {
-        $db = System::Config("database");
-        return new \DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"]);
+        return self::$__db;
     }
 
     public static function __from()
