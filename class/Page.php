@@ -63,25 +63,11 @@ class Page
                     }
                 }
             }
-            try {
-                $ret = call_user_func_array([$this, $method], $data);
-            } catch (\Exception $e) {
-                if ($this->request->getHeader("Accept")[0] == "application/json") {
-                    if ($e->getCode()) {
-                        $ret = ["code" => $e->getCode(), "message" => $e->getMessage()];
-                    } else {
-                        $ret = ["message" => $e->getMessage()];
-                    }
-                } else {
-                    return $this->response
-                        ->withHeader("Content-Type", "text/html; charset=UTF-8")
-                        ->withBody(new Stream($e->getMessage()));
-                }
-            }
+            $ret = call_user_func_array([$this, $method], $data);
+
         } catch (\ReflectionException $e) {
             $ret = call_user_func_array([$this, $method], $params);
         }
-
 
         if ($ret !== null) {
             $this->response->setHeader("Content-Type", "application/json; charset=UTF-8");

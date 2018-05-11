@@ -1,3 +1,8 @@
+### 2.3.0
+exception not catch in Page now, catch by app::run
+
+---
+
 ### 2.1.0
 
 logger added

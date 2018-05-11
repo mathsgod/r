@@ -4,6 +4,8 @@ namespace R;
 use R\Psr7\ServerRequest;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
+use R\Psr7\Stream;
+use Exception;
 
 class App implements LoggerAwareInterface
 {
@@ -57,7 +59,24 @@ class App implements LoggerAwareInterface
             $request = $request->withMethod($route->method);
 
             if ($this->logger) $this->logger->debug($class . " invoke start");
-            $response = $page($request, $response);
+
+            try {
+                $response = $page($request, $response);
+            } catch (Exception $e) {
+                if ($request->getHeader("Accept")[0] == "application/json") {
+                    $response = $response->withHeader("Content-Type", "application/json; charset=UTF-8");
+                    if ($e->getCode()) {
+                        $ret = ["code" => $e->getCode(), "message" => $e->getMessage()];
+                    } else {
+                        $ret = ["message" => $e->getMessage()];
+                    }
+                    $response = $response->withBody(new Stream(json_encode($ret)));
+                } else {
+                    $response = $response->withHeader("Content-Type", "text/html; charset=UTF-8")
+                        ->withBody(new Stream($e->getMessage()));
+                }
+            }
+
             if ($this->logger) $this->logger->debug($class . " invoke end");
 
             if (($statusCode = $response->getStatusCode()) != 200) {
