@@ -17,7 +17,7 @@ class Set extends \ArrayIterator
 				$set[] = trim($d);
 			}
 		} elseif (is_array($data)) {
-			$set = new Set($data);
+			$set = new Set(array_values($data));
 		}
 
 		return $set;
@@ -36,7 +36,7 @@ class Set extends \ArrayIterator
 	{
 		$a = $this->getArrayCopy();
 		$b = Set::Create($set)->getArrayCopy();
-		return Set::Create($a + $b);
+		return Set::Create(array_unique(array_merge($a,$b)));
 	}
 
 	public function intersection($set)
