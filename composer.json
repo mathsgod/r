@@ -19,15 +19,15 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "hostlink/r-db": "1.*"
+        "hostlink/r-db": "2.*"
     },
     "suggest": {
-        "hostlink/r-db": "*"
+        "hostlink/r-db": "2.*"
     },
     "type": "library",
     "license": "proprietary",
     "minimum-stability": "stable",
-    "version": "2.3.1",
+    "version": "2.4.0",
     "authors": [
         {
             "name": "Raymond Chong",

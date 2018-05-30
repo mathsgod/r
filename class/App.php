@@ -37,7 +37,7 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
-            $this->db = new \DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
+            $this->db = new \R\DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
             Model::$__db = $this->db;
 
             if (isset($db["ERRMODE"])) {
