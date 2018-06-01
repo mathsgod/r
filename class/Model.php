@@ -2,18 +2,15 @@
 
 namespace R;
 
-abstract class Model extends \DB\Model
+use R\DB\RSList;
+
+abstract class Model extends \R\DB\Model
 {
     public static $__db;
 
     public static function __db()
     {
         return self::$__db;
-    }
-
-    public static function __from()
-    {
-        return new \DB\Query(get_called_class());
     }
 
     public static function distinct($query, $where = null, $order = null)
@@ -33,30 +30,12 @@ abstract class Model extends \DB\Model
 
     public static function Count($where = null)
     {
-        $key = self::__key();
-        if ($key == "") $key = "*";
-        $rs = self::__from()->where($where)->select("count($key)");
-        return (int)$rs->fetchColumn();
+        return self::_count($where);
     }
 
     public static function first($where = null, $order = null)
     {
-        return self::find($where, $order, 1)->first();
-    }
-
-    public static function find($where = null, $orderby = null, $limit = null)
-    {
-        if (is_numeric($where)) {
-            try {
-                $class = get_called_class();
-                return new $class($where);
-            } catch (Exception $e) {
-                return null;
-            }
-        }
-
-        $q = self::__from()->where($where)->orderBy($orderby)->limit($limit);
-        return new RSList($q->select(), get_called_class());
+        return parent::First($where, $order);
     }
 
     public function id()
@@ -64,7 +43,7 @@ abstract class Model extends \DB\Model
         if ($this->_key) {
             $key = $this->_key;
         } else {
-            $key = static::__key();
+            $key = static::_key();
         }
         return $this->$key;
     }
@@ -127,7 +106,7 @@ abstract class Model extends \DB\Model
             throw new \Exception($class . " class not found");
         }
 
-        $key = forward_static_call(array($class, "__key"));
+        $key = forward_static_call(array($class, "_key"));
 
         if (in_array($key, array_keys(get_object_vars($this)))) {
             $id = $this->$key;
@@ -138,7 +117,7 @@ abstract class Model extends \DB\Model
         if (!$this->id()) {
             return new DataList();
         }
-        $key = static::__key();
+        $key = static::_key();
         if (is_array($args[0])) {
             $args[0][] = "{$key}={$this->id()}";
         } else {
@@ -160,7 +139,7 @@ abstract class Model extends \DB\Model
     public function _distinct($class, $query, $where = null, $order = null)
     {
         $id = $this->id();
-        $key = static::__key();
+        $key = static::_key();
 
         $f = from($class);
         $f = $f->where($key . "=" . $id);
@@ -180,14 +159,15 @@ abstract class Model extends \DB\Model
 
         $id = $this->id();
         if (!$id) return 0;
-        $key = static::__key();
+        $key = static::_key();
 
         if ($namespace != "") {
-            $f = \DB\Query::from("\\" . $namespace . "\\" . $class);
+            $class="\\" . $namespace . "\\" . $class;
         } else {
-            $f = \DB\Query::from("\\" . $class);
+            $class="\\$class";
         }
 
+        $f=$class::_table()->find();
         $f->where($key . "=" . $id);
         $f->where($where);
         return $f->count();
@@ -196,32 +176,36 @@ abstract class Model extends \DB\Model
     public function _delete($class, $where = null)
     {
         $id = $this->id();
-        $key = static::__key();
+        $key = static::_key();
 
         $rc = new \ReflectionClass(get_called_class());
         $namespace = $rc->getNamespaceName();
         if ($namespace != "") {
-            $f = \DB\Query::from("\\" . $namespace . "\\" . $class);
+            $class="\\" . $namespace . "\\" . $class;
         } else {
-            $f = \DB\Query::from("\\" . $class);
+            $class="\\$class";
         }
-        $f->where($key . "=" . intval($id))->where($where)->delete();
+        $f=$class::_table()->delete();
+        $f->where($key . "=" . intval($id));
+        $f->where($where);
+        return $f->execute();
     }
 
     public function _scalar($class, $query, $where)
     {
         $id = $this->id();
-        $key = static::__key();
+        $key = static::_key();
         $rc = new \ReflectionClass(get_called_class());
         $namespace = $rc->getNamespaceName();
         if ($namespace != "") {
-            $f = \DB\Query::from("\\" . $namespace . "\\" . $class);
+            $class="\\" . $namespace . "\\" . $class;
         } else {
-            $f = \DB\Query::from("\\" . $class);
+            $class="\\$class";
         }
+
+        $f=$class::_table()->select($query);
         $f->where($key . "=" . intval($id));
         $f->where($where);
-        $r = $f->select($query);
-        return $r->fetchColumn(0);
+        return $r->execute()->fetchColumn(0);
     }
 }
