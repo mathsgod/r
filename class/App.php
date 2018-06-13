@@ -48,7 +48,9 @@ class App implements LoggerAwareInterface
 
     public function run()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $route = $this->router->getRoute($this->request, $this->loader);
         $request = $this->request->withAttribute("route", $route);

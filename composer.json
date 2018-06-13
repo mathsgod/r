@@ -27,7 +27,7 @@
     "type": "library",
     "license": "proprietary",
     "minimum-stability": "stable",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "authors": [
         {
             "name": "Raymond Chong",

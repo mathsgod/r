@@ -1,5 +1,11 @@
+### 2.4.1
+check session is started
+
+---
+
 ### 2.3.1
 RSList allow create if null value are input
+
 ---
 
 ### 2.3.0
