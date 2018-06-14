@@ -13,18 +13,27 @@ abstract class Model extends \R\DB\Model
         return self::$__db;
     }
 
-    public static function distinct($query, $where = null, $order = null)
+    public static function Distinct($query, $where = null, $order = null)
     {
-        $rs = self::__from()->where($where)->orderby($order)->select("distinct(`$query`)");
-        $r = new RSList($rs);
-        return $r->map(function ($o) {
+
+        $f = self::_table()->select("distinct(`$query`)");
+        $f->where($where);
+        $f->orderby($order);
+
+        $data=[];
+        foreach($f->execute() as $o){
             $a = array_values($o);
-            return $a[0];
-        });
+            $data[]=$a[0];
+        }
+        return $data;
     }
 
     public static function Scalar($query, $where = null)
     {
+        $q = self::_table()->select($query);
+        $q->where($where);
+        return $q->execute()->fetchColumn(0);
+
         return self::__from()->where($where)->select($query)->fetchColumn(0);
     }
 
@@ -162,12 +171,12 @@ abstract class Model extends \R\DB\Model
         $key = static::_key();
 
         if ($namespace != "") {
-            $class="\\" . $namespace . "\\" . $class;
+            $class = "\\" . $namespace . "\\" . $class;
         } else {
-            $class="\\$class";
+            $class = "\\$class";
         }
 
-        $f=$class::_table()->find();
+        $f = $class::_table()->find();
         $f->where($key . "=" . $id);
         $f->where($where);
         return $f->count();
@@ -181,11 +190,11 @@ abstract class Model extends \R\DB\Model
         $rc = new \ReflectionClass(get_called_class());
         $namespace = $rc->getNamespaceName();
         if ($namespace != "") {
-            $class="\\" . $namespace . "\\" . $class;
+            $class = "\\" . $namespace . "\\" . $class;
         } else {
-            $class="\\$class";
+            $class = "\\$class";
         }
-        $f=$class::_table()->delete();
+        $f = $class::_table()->delete();
         $f->where($key . "=" . intval($id));
         $f->where($where);
         return $f->execute();
@@ -198,14 +207,14 @@ abstract class Model extends \R\DB\Model
         $rc = new \ReflectionClass(get_called_class());
         $namespace = $rc->getNamespaceName();
         if ($namespace != "") {
-            $class="\\" . $namespace . "\\" . $class;
+            $class = "\\" . $namespace . "\\" . $class;
         } else {
-            $class="\\$class";
+            $class = "\\$class";
         }
 
-        $f=$class::_table()->select($query);
+        $f = $class::_table()->select($query);
         $f->where($key . "=" . intval($id));
         $f->where($where);
-        return $r->execute()->fetchColumn(0);
+        return $f->execute()->fetchColumn(0);
     }
 }

@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef7412b7e10772b450a9ad3f64a2692e",
+    "content-hash": "cfda93738d896fb2ce3793c466c692e6",
     "packages": [
         {
             "name": "hostlink/r-psr7",
-            "version": "2.0.1",
+            "version": "2.1.0",
             "dist": {
                 "type": "zip",
-                "url": "https://raymond2.hostlink.com.hk/bitbucket/repo/packages/hostlink-r-psr7-2.0.1.zip",
+                "url": "https://raymond2.hostlink.com.hk/bitbucket/repo/packages/hostlink-r-psr7-2.1.0.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -190,10 +190,10 @@
         },
         {
             "name": "hostlink/r-db",
-            "version": "1.2.0",
+            "version": "2.0.0",
             "dist": {
                 "type": "zip",
-                "url": "https://raymond2.hostlink.com.hk/bitbucket/repo/packages/hostlink-r-db-1.2.0.zip",
+                "url": "https://raymond2.hostlink.com.hk/bitbucket/repo/packages/hostlink-r-db-2.0.0.zip",
                 "reference": null,
                 "shasum": null
             },
@@ -206,11 +206,11 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "DB\\": "src"
+                    "R\\": "src"
                 }
             },
             "license": [
-                "MIT"
+                "proprietary"
             ],
             "authors": [
                 {
@@ -916,16 +916,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "5.0.6",
+            "version": "5.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "33fd41a76e746b8fa96d00b49a23dadfa8334cdf"
+                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/33fd41a76e746b8fa96d00b49a23dadfa8334cdf",
-                "reference": "33fd41a76e746b8fa96d00b49a23dadfa8334cdf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
+                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
                 "shasum": ""
             },
             "require": {
@@ -971,7 +971,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-01-06T05:45:45+00:00"
+            "time": "2018-05-29T13:50:43+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
