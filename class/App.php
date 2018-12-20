@@ -22,6 +22,8 @@ class App implements LoggerAwareInterface
             session_start();
         }
         
+        $this->model = new ORM($this);
+        
         $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
