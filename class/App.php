@@ -18,6 +18,10 @@ class App implements LoggerAwareInterface
 
     public function __construct($root, $loader, $logger)
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
         $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
@@ -37,7 +41,7 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
-            $this->db = new \DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
+            $this->db = new \R\DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
             Model::$__db = $this->db;
 
             if (isset($db["ERRMODE"])) {
@@ -48,8 +52,6 @@ class App implements LoggerAwareInterface
 
     public function run()
     {
-        session_start();
-
         $route = $this->router->getRoute($this->request, $this->loader);
         $request = $this->request->withAttribute("route", $route);
 

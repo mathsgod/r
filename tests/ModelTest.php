@@ -8,12 +8,22 @@ use R\App;
 
 final class ModelTest extends TestCase
 {
-  //  public function test_first()
+    public function test_scalar()
+    {
+        $t = new Testing();
+        $t->j = ["a", "b", "c"];
+        $t->save();
+        $this->assertEquals($t->testing_id, Testing::Scalar("max(testing_id)"));
+    }
+
+    
+
+      //  public function test_first()
    // {
 //        print_r(Testing::First());
     //}
 
-    public function test_first()
+/*    public function test_first()
     {
 
         $t = new Testing();
@@ -26,7 +36,7 @@ final class ModelTest extends TestCase
         $this->assertEquals(["a", "b", "c"], $testing->j);
 
         $t->delete();
-    }
+    }*/
 
     public function testJSON()
     {
@@ -48,13 +58,13 @@ final class ModelTest extends TestCase
 
     public function test_key()
     {
-        $key = Testing::__key();
+        $key = Testing::_key();
         $this->assertEquals("testing_id", $key);
     }
 
     public function test_table()
     {
-        $table = Testing::__table();
+        $table = Testing::_table();
         $this->assertEquals("Testing", $table->name);
     }
 
