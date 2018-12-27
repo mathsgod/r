@@ -1,7 +1,7 @@
 <?
 namespace R;
 
-class ORM
+class Entity
 {
     public $_app;
     public function __construct($app)

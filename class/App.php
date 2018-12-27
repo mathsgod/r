@@ -15,15 +15,16 @@ class App implements LoggerAwareInterface
     public $loader;
     public $logger;
     public $db;
+    public $entity;
 
     public function __construct($root, $loader, $logger)
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        
-        $this->model = new ORM($this);
-        
+
+        $this->entity = new Entity($this);
+
         $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
