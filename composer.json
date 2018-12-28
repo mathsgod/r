@@ -1,10 +1,10 @@
 {
-    "repositories": {
-        "hostlink-raymond": {
+    "repositories": [
+        {
             "type": "composer",
-            "url": "https://raymond2.hostlink.com.hk/bitbucket/repo"
+            "url": "https://raymond2.hostlink.com.hk/satis/web"
         }
-    },
+    ],
     "name": "hostlink/r",
     "description": "raymond core",
     "autoload": {
@@ -15,7 +15,8 @@
     "require": {
         "php": ">=5.4",
         "hostlink/r-psr7": "2.*",
-        "psr/log": "*"
+        "psr/log": "*",
+        "mathsgod/data-structure": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

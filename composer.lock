@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfda93738d896fb2ce3793c466c692e6",
+    "content-hash": "83b26785413a5da7cf163c82e3ca7e3c",
     "packages": [
         {
             "name": "hostlink/r-psr7",
@@ -34,6 +34,35 @@
                 "proprietary"
             ],
             "description": "psr7"
+        },
+        {
+            "name": "mathsgod/data-structure",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://mathsgod:emN9LVft9qeUmQKeQsZL@bitbucket.org/mathsgod/data-structure.git",
+                "reference": "a0c1ad17124317567ac5974ccb3670353769c6f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://raymond2.hostlink.com.hk/satis/web/dist/mathsgod/data-structure/mathsgod-data-structure-1.0.0-3c11ad.zip",
+                "reference": "a0c1ad17124317567ac5974ccb3670353769c6f2",
+                "shasum": "310714b5857e1c5ad5e0e73c70a8fe032a7cac6f"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "R\\": "src"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Raymond Chong",
+                    "email": "mathsgod@yahoo.com"
+                }
+            ],
+            "description": "Data structure",
+            "time": "2018-12-28T03:00:00+00:00"
         },
         {
             "name": "psr/http-message",

@@ -18,4 +18,16 @@ class Entity
         return $q;
     }
 
+    public function __call($name, $arguments)
+    {
+        if ($arguments) {
+            return new $name($arguments[0]);
+        }
+
+        $q = new Query($name);
+        $q->select();
+        $q->from($name);
+        return $q;
+    }
+
 }
