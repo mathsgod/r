@@ -5,7 +5,7 @@
             "url": "https://raymond2.hostlink.com.hk/bitbucket/repo"
         }
     },
-    "name": "hostlink/r",
+    "name": "mathsgod/r-app",
     "description": "raymond core",
     "autoload": {
         "psr-4": {
@@ -14,20 +14,19 @@
     },
     "require": {
         "php": ">=5.4",
-        "hostlink/r-psr7": "2.*",
+        "mathsgod/psr7": "2.*",
         "psr/log": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "hostlink/r-db": "2.*"
+        "mathsgod/db": "2.*"
     },
     "suggest": {
-        "hostlink/r-db": "2.*"
+        "mathsgod/db": "2.*"
     },
     "type": "library",
     "license": "proprietary",
     "minimum-stability": "stable",
-    "version": "2.4.3",
     "authors": [
         {
             "name": "Raymond Chong",
