@@ -16,14 +16,14 @@ class App implements LoggerAwareInterface
     public $logger;
     public $db;
 
-    public function __construct($root, $loader, $logger)
+    public function __construct($root, $loader = null, $logger = null)
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        
+
         $this->model = new ORM($this);
-        
+
         $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
@@ -39,7 +39,7 @@ class App implements LoggerAwareInterface
         }
 
         if ($db = $this->config["database"]) {
-            if (!$db["charset"]) {
+            if (empty($db["charset"])) {
                 $db["charset"] = "utf8mb4";
             }
 
