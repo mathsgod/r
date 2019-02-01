@@ -22,8 +22,6 @@ class App implements LoggerAwareInterface
             session_start();
         }
 
-        $this->model = new ORM($this);
-
         $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
@@ -43,8 +41,7 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
-            $this->db = new \R\DB\PDO($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
-            Model::$__db = $this->db;
+            $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
 
             if (isset($db["ERRMODE"])) {
                 $this->db->setAttribute(\PDO::ATTR_ERRMODE, $db["ERRMODE"]);

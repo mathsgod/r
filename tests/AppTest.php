@@ -11,7 +11,7 @@ final class AppTest extends TestCase
 
     public function testCreate()
     {
-        $app = new App();
+        $app = new App(__DIR__);
         $this->assertInstanceOf(App::class, $app);
     }
 
