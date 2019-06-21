@@ -180,5 +180,4 @@ class Route
     {
         return new PURL($this->path);
     }
-
 }

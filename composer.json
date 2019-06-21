@@ -1,17 +1,19 @@
 {
-    "repositories": [{
-        "type": "composer",
-        "url": "https://raymond2.hostlink.com.hk/satis/web"
-    }],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://raymond2.hostlink.com.hk/satis/web"
+        }
+    ],
     "name": "mathsgod/r",
     "description": "raymond core",
     "autoload": {
         "psr-4": {
-            "R\\": "class"
+            "R\\": "src"
         }
     },
     "require": {
-        "php": ">=5.4",
+        "php": ">=7.0",
         "mathsgod/r-psr7": "2.*",
         "psr/log": "*"
     },
