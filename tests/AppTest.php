@@ -21,5 +21,9 @@ final class AppTest extends TestCase
         $this->assertTrue(is_array($app->config));
     }
 
-
+    public function test_db()
+    {
+        $app = new App(__DIR__);
+        $this->assertInstanceOf(\R\DB\Schema::class, $app->db);
+    }
 }
