@@ -16,12 +16,8 @@ class App implements LoggerAwareInterface
     public $logger;
     public $db;
 
-    public function __construct($root, $loader = null, $logger = null)
+    public function __construct(string $root = null, $loader = null, $logger = null)
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
         $this->loader = $loader ? $loader : new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
         $this->router = new Router();
@@ -95,5 +91,4 @@ class App implements LoggerAwareInterface
     {
         $this->logger = $logger;
     }
-
 }
