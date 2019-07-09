@@ -1,4 +1,5 @@
 <?
+
 namespace R;
 
 use R\Psr7\ServerRequest;
@@ -42,6 +43,8 @@ class App implements LoggerAwareInterface
             if (isset($db["ERRMODE"])) {
                 $this->db->setAttribute(\PDO::ATTR_ERRMODE, $db["ERRMODE"]);
             }
+
+            Model::$db = $this->db;
         }
     }
 
@@ -83,7 +86,7 @@ class App implements LoggerAwareInterface
             foreach ($response->getHeaders() as $name => $values) {
                 header($name . ": " . implode(", ", $values));
             }
-            file_put_contents("php://output", (string)$response);
+            file_put_contents("php://output", (string) $response);
         }
     }
 
