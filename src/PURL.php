@@ -1,16 +1,21 @@
 <?php
+
 namespace R;
-class PURL {
+
+class PURL
+{
     private $url;
     private $purl;
-    public function __construct($url) {
+    public function __construct(string $url)
+    {
         $this->url = $url;
         $this->purl = parse_url($url);
     }
 
-    public function segment($segment = null) {
+    public function segment($segment = null)
+    {
         $path = $this->purl["path"];
-        if ($path[0] == "/")$path = substr($path, 1);
+        if ($path[0] == "/") $path = substr($path, 1);
         $p = explode("/", $path);
         if ($segment === null) {
             return $p;
@@ -18,15 +23,18 @@ class PURL {
         return $p[$segment];
     }
 
-    public function path() {
+    public function path()
+    {
         return $this->purl["path"];
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->url;
     }
 
-    public function param($name) {
+    public function param($name)
+    {
         $result = [];
         parse_str($this->purl["query"], $result);
 

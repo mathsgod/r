@@ -1,5 +1,8 @@
 <?
+
 namespace R;
+
+use Psr\Http\Message\RequestInterface;
 
 class Router
 {
@@ -10,7 +13,7 @@ class Router
         $this->route[] = ["method" => $method, "path" => $path, "params" => $params];
     }
 
-    public function getRoute($request, $loader)
+    public function getRoute(RequestInterface $request, $loader)
     {
         $document_root = $request->getServerParams()["DOCUMENT_ROOT"];
         $base = $request->getUri()->getBasePath();
@@ -27,7 +30,7 @@ class Router
                 $r = new Route($request, $loader);
 
                 $r->path = $path;
-                $r->uri = (string)$request->getURI();
+                $r->uri = (string) $request->getURI();
                 $r->class = $route["params"]["class"];
                 $r->method = strtolower($route["method"]);
                 $r->action = basename($route["path"]);

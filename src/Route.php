@@ -1,5 +1,8 @@
 <?php
+
 namespace R;
+
+use Psr\Http\Message\RequestInterface;
 
 class Route
 {
@@ -13,15 +16,14 @@ class Route
     public $id;
     public $type;
 
-
-    public function __construct($request, $loader)
+    public function __construct(RequestInterface $request, $loader)
     {
         if (!$request) {
             return;
         }
 
         $uri = $request->getUri();
-        $this->uri = (string)$uri;
+        $this->uri = (string) $uri;
         $this->path = $uri->getPath();
 
         $this->method = strtolower($request->getMethod());
