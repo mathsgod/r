@@ -2,7 +2,7 @@
 
 namespace R;
 
-use Psr\Http\Message\RequestInterface;
+use R\Psr7\ServerRequest;
 
 class Router
 {
@@ -13,7 +13,12 @@ class Router
         $this->route[] = ["method" => $method, "path" => $path, "params" => $params];
     }
 
-    public function getRoute(RequestInterface $request, $loader)
+    public function addRoute(callable $callable)
+    {
+        return $this->route[] = $callable;
+    }
+
+    public function getRoute(ServerRequest $request, $loader)
     {
         $document_root = $request->getServerParams()["DOCUMENT_ROOT"];
         $base = $request->getUri()->getBasePath();
@@ -26,7 +31,11 @@ class Router
 
         $method = $request->getMethod();
         foreach ($this->route as $route) {
-            if ($method == $route["method"] && $path == $route["path"]) {
+            if (is_callable($route)) {
+                if ($r = $route($request, $loader)) {
+                    return $r;
+                }
+            } elseif ($method == $route["method"] && $path == $route["path"]) {
                 $r = new Route($request, $loader);
 
                 $r->path = $path;

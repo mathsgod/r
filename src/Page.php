@@ -2,8 +2,8 @@
 
 namespace R;
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use R\Psr7\Stream;
 use R\Psr7\JSONStream;
 
@@ -27,7 +27,7 @@ class Page
         $this->response->getBody()->write($element);
     }
 
-    public function __invoke(RequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         if (!$request) {
             throw new \InvalidArgumentException("request cannot be null");
