@@ -8,14 +8,21 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use R\Psr7\Stream;
 use Exception;
+use Psr\Log\LoggerAwareTrait;
 
 class App implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
     public $root;
+    public $document_root;
+    public $base_path;
     public $request;
     public $config = [];
     public $loader;
-    public $logger;
+
+    /**
+     * @var \R\DB\Schema
+     */
     public $db;
 
     public function __construct(string $root = null, ClassLoader $loader = null, LoggerInterface  $logger = null)
@@ -30,8 +37,17 @@ class App implements LoggerAwareInterface
         $this->loader->addPsr4("", $this->root . "/class");
         $this->loader->register();
 
-        if (is_readable($ini = $this->root . "/config.ini")) {
+        $this->base_path = $this->request->getUri()->getBasePath();
+
+        //get document root
+        $this->document_root = substr($root, 0, -strlen($this->base_path));
+
+        if (is_readable($ini = $this->root . DIRECTORY_SEPARATOR . "config.ini")) {
             $this->config = parse_ini_file($ini, true);
+        }
+
+        if (is_readable($ini = $this->document_root . DIRECTORY_SEPARATOR . "config.ini")) {
+            $this->config = array_merge($this->config, parse_ini_file($ini, true));
         }
 
         if ($db = $this->config["database"]) {
@@ -89,10 +105,5 @@ class App implements LoggerAwareInterface
             }
             file_put_contents("php://output", (string) $response);
         }
-    }
-
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }

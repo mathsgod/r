@@ -1,5 +1,5 @@
 <?
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 ini_set("display_errors", "On");
 
 $loader = require_once("../vendor/autoload.php");

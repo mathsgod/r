@@ -11,7 +11,6 @@ class Page
 {
     protected $request;
     protected $response;
-    protected $logger;
 
     public function __construct(App $app)
     {
@@ -19,7 +18,6 @@ class Page
         $this->app = $app;
         $this->file = $app->loader->findFile($class);
         $this->root = $app->root;
-        $this->logger = $app->logger;
     }
 
     public function write($element)
