@@ -2,6 +2,7 @@
 
 namespace R;
 
+use Composer\Autoload\ClassLoader;
 use Psr\Http\Message\RequestInterface;
 
 class Route
@@ -16,7 +17,7 @@ class Route
     public $id;
     public $type;
 
-    public function __construct(RequestInterface $request, $loader)
+    public function __construct(RequestInterface $request, ClassLoader $loader)
     {
         if (!$request) {
             return;
@@ -122,7 +123,7 @@ class Route
         }
     }
 
-    public function psr4($request, $loader)
+    public function psr4($request, ClassLoader $loader)
     {
         $qs = explode("/", $this->path);
 

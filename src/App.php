@@ -19,6 +19,7 @@ class App implements LoggerAwareInterface
     public $request;
     public $config = [];
     public $loader;
+    public $router;
 
     /**
      * @var \R\DB\Schema
@@ -29,7 +30,6 @@ class App implements LoggerAwareInterface
     {
         $this->loader = $loader ?? new \Composer\Autoload\ClassLoader();
         $this->request = ServerRequest::FromEnv();
-        $this->router = new Router();
         $this->logger = $logger;
 
         $this->root = $root ?? getcwd();
@@ -67,6 +67,8 @@ class App implements LoggerAwareInterface
 
     public function run()
     {
+        $this->router = new Router();
+
         $route = $this->router->getRoute($this->request, $this->loader);
         $request = $this->request->withAttribute("route", $route);
 
@@ -82,10 +84,10 @@ class App implements LoggerAwareInterface
             } catch (Exception $e) {
                 if ($request->getHeader("Accept")[0] == "application/json") {
                     $response = $response->withHeader("Content-Type", "application/json; charset=UTF-8");
-                    if ($e->getCode()) {
-                        $ret = ["code" => $e->getCode(), "message" => $e->getMessage()];
+                    if ($code = $e->getCode()) {
+                        $ret = ["error" => ["code" => $code, "message" => $e->getMessage()]];
                     } else {
-                        $ret = ["message" => $e->getMessage()];
+                        $ret = ["error" => ["message" => $e->getMessage()]];
                     }
                     $response = $response->withBody(new Stream(json_encode($ret)));
                 } else {

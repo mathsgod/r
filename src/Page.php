@@ -7,9 +7,20 @@ use Psr\Http\Message\ServerRequestInterface;
 use R\Psr7\Stream;
 use R\Psr7\JSONStream;
 
-class Page
+abstract class Page
 {
+    public $app;
+    public $file;
+    public $root;
+
+    /**
+     * @var \Psr\Http\Message\ServerRequestInterface
+     */
     protected $request;
+
+    /**
+     * @var \Psr\Http\Message\ResponseInterface
+     */
     protected $response;
 
     public function __construct(App $app)
@@ -27,13 +38,6 @@ class Page
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        if (!$request) {
-            throw new \InvalidArgumentException("request cannot be null");
-        }
-        if (!$response) {
-            throw new \InvalidArgumentException("response cannot be null");
-        }
-
         $this->request = $request;
         $this->response = $response;
 
@@ -67,7 +71,7 @@ class Page
         }
 
         if ($ret !== null) {
-            $this->response->setHeader("Content-Type", "application/json; charset=UTF-8");
+            $this->response = $this->response->withHeader("Content-Type", "application/json; charset=UTF-8");
             $body = new JSONStream();
             $body->write($ret);
             return $this->response->withBody($body);

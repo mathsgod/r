@@ -2,6 +2,7 @@
 
 namespace R;
 
+use Composer\Autoload\ClassLoader;
 use R\Psr7\ServerRequest;
 
 class Router
@@ -18,7 +19,7 @@ class Router
         return $this->route[] = $callable;
     }
 
-    public function getRoute(ServerRequest $request, $loader)
+    public function getRoute(ServerRequest $request,ClassLoader $loader)
     {
         $document_root = $request->getServerParams()["DOCUMENT_ROOT"];
         $base = $request->getUri()->getBasePath();
