@@ -28,19 +28,17 @@ class App implements LoggerAwareInterface
 
     public function __construct(string $root = null, ClassLoader $loader = null, LoggerInterface  $logger = null)
     {
-        $this->loader = $loader ?? new \Composer\Autoload\ClassLoader();
-        $this->request = ServerRequest::FromEnv();
+        $this->loader = $loader ?? new ClassLoader();
         $this->logger = $logger;
 
         $this->root = $root ?? getcwd();
 
-        $this->loader->addPsr4("", $this->root . "/class");
+        $this->loader->addPsr4("", $this->root . DIRECTORY_SEPARATOR . "class");
         $this->loader->register();
 
+        $this->request = ServerRequest::FromEnv();
         $this->base_path = $this->request->getUri()->getBasePath();
-
-        //get document root
-        $this->document_root = substr($root, 0, -strlen($this->base_path));
+        $this->document_root = substr($this->root, 0, -strlen($this->base_path));
 
         if (is_readable($ini = $this->root . DIRECTORY_SEPARATOR . "config.ini")) {
             $this->config = parse_ini_file($ini, true);
@@ -63,12 +61,11 @@ class App implements LoggerAwareInterface
 
             Model::$db = $this->db;
         }
+        $this->router = new Router($this->root);
     }
 
     public function run()
     {
-        $this->router = new Router();
-
         $route = $this->router->getRoute($this->request, $this->loader);
         $request = $this->request->withAttribute("route", $route);
 
@@ -89,7 +86,7 @@ class App implements LoggerAwareInterface
                     } else {
                         $ret = ["error" => ["message" => $e->getMessage()]];
                     }
-                    $response = $response->withBody(new Stream(json_encode($ret)));
+                    $response = $response->withBody(new Stream(json_encode($ret, JSON_UNESCAPED_UNICODE)));
                 } else {
                     $response = $response->withHeader("Content-Type", "text/html; charset=UTF-8")
                         ->withBody(new Stream($e->getMessage()));

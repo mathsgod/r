@@ -3,11 +3,16 @@
 namespace R;
 
 use Composer\Autoload\ClassLoader;
-use R\Psr7\ServerRequest;
+use Psr\Http\Message\RequestInterface;
 
 class Router
 {
     public $route = [];
+    public $root;
+    public function __construct(string $root)
+    {
+        $this->root = $root;
+    }
 
     public function add($method, $path, $params)
     {
@@ -19,10 +24,8 @@ class Router
         return $this->route[] = $callable;
     }
 
-    public function getRoute(ServerRequest $request,ClassLoader $loader)
+    public function getRoute(RequestInterface $request, ClassLoader $loader)
     {
-        $document_root = $request->getServerParams()["DOCUMENT_ROOT"];
-        $base = $request->getUri()->getBasePath();
         $path = $request->getUri()->getPath();
 
         $path = array_filter(explode("/", $path), function ($o) {
@@ -37,7 +40,7 @@ class Router
                     return $r;
                 }
             } elseif ($method == $route["method"] && $path == $route["path"]) {
-                $r = new Route($request, $loader);
+                $r = new Route($request, $loader, $this->root);
 
                 $r->path = $path;
                 $r->uri = (string) $request->getURI();
@@ -45,7 +48,7 @@ class Router
                 $r->method = strtolower($route["method"]);
                 $r->action = basename($route["path"]);
                 parse_str($request->getURI()->getQuery(), $r->query);
-                $r->file = $document_root . $base . $route["params"]["file"];
+                $r->file = $this->root . "/" . $route["params"]["file"];
 
                 $loader->addClassMap([
                     $r->class => $r->file
@@ -54,6 +57,6 @@ class Router
                 return $r;
             }
         }
-        return new Route($request, $loader);
+        return new Route($request, $loader, $this->root);
     }
 }

@@ -1,11 +1,11 @@
 <?
 
-class _index extends R\Page
+class _a_b extends R\Page
 {
 
     public function get()
     {
         //print_r($this->app);
-        $this->write("Hello world!");
+        $this->write("a/b.php");
     }
 }

@@ -16,12 +16,11 @@ class Route
     public $ids = [];
     public $id;
     public $type;
+    public $root;
 
-    public function __construct(RequestInterface $request, ClassLoader $loader)
+    public function __construct(RequestInterface $request, ClassLoader $loader, string $root)
     {
-        if (!$request) {
-            return;
-        }
+        $this->root = $root;
 
         $uri = $request->getUri();
         $this->uri = (string) $uri;
@@ -78,16 +77,14 @@ class Route
             return;
         }
     }
-    public function psr0($request, $loader)
+    public function psr0(RequestInterface $request)
     {
         $qs = explode("/", $this->path);
         $method = strtolower($request->getMethod());
-        $root = $request->getServerParams()["DOCUMENT_ROOT"];
-        $basePath = $request->getURI()->getBasePath();
 
         if (!$this->no_index) {
             $path = implode("/", $qs);
-            if (file_exists($file = $root . $basePath . "/pages/" . $path . "/index.php")) {
+            if (file_exists($file = $this->root . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $path . "/index.php")) {
                 $this->file = $file;
                 $this->path = implode("/", $qs) . "/index";
                 $this->class = "_" . implode("_", $qs) . "_index";
@@ -101,7 +98,7 @@ class Route
         while (count($qs)) {
             $path = implode("/", $qs);
 
-            if (file_exists($file = $root . $basePath . "/pages/" . $path . ".php")) {
+            if (file_exists($file = $this->root . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $path . ".php")) {
                 $this->file = $file;
                 $this->path = $path;
                 $this->class = "_" . implode("_", $qs);
@@ -113,7 +110,7 @@ class Route
         }
 
         if (!$this->class) { //fall back to index
-            if (file_exists($file = $root . $basePath . "/pages/index.php")) {
+            if (file_exists($file = $this->root . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . "index.php")) {
                 $this->file = $file;
                 $path = implode("/", $qs);
                 $this->class = "_index";
@@ -123,7 +120,7 @@ class Route
         }
     }
 
-    public function psr4($request, ClassLoader $loader)
+    public function psr4(RequestInterface $request, ClassLoader $loader)
     {
         $qs = explode("/", $this->path);
 
@@ -171,8 +168,7 @@ class Route
         }
 
         if (!$this->class) {
-            $root = $request->getServerParams()["DOCUMENT_ROOT"];
-            $this->file = $root . "/pages/index.php";
+            $this->file = $this->root . "/pages/index.php";
             $this->path = "index";
             $this->class = "index";
             $this->method = $this->action;
