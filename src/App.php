@@ -45,7 +45,9 @@ class App implements LoggerAwareInterface
         }
 
         if (is_readable($ini = $this->document_root . DIRECTORY_SEPARATOR . "config.ini")) {
-            $this->config = array_merge($this->config, parse_ini_file($ini, true));
+            foreach (parse_ini_file($ini, true) as $k => $v) {
+                $this->config[$k] = array_merge($this->config[$k] ?? [], $v);
+            }
         }
 
         if ($db = $this->config["database"]) {
