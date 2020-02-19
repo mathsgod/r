@@ -50,6 +50,10 @@ class App implements LoggerAwareInterface
             }
         }
 
+        if ($this->config["r"]["document_root"]) {
+            $this->document_root = $this->config["r"]["document_root"];
+        }
+
         if ($db = $this->config["database"]) {
             if (empty($db["charset"])) {
                 $db["charset"] = "utf8mb4";
