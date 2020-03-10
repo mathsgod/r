@@ -19,8 +19,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "mathsgod/r-db": "^3.0",
-        "mathsgod/data-structure": "^1.0"
+        "mathsgod/r-db": "^3.0"
     },
     "suggest": {
         "mathsgod/r-db": "3.*"

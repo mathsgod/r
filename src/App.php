@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use R\Psr7\Stream;
 use Exception;
+use PDOException;
 use Psr\Log\LoggerAwareTrait;
 
 class App implements LoggerAwareInterface
@@ -26,10 +27,10 @@ class App implements LoggerAwareInterface
      */
     public $db;
 
-    public function __construct(string $root = null, ClassLoader $loader = null, LoggerInterface  $logger = null)
+    public function __construct(string $root = null, ClassLoader $loader = null, LoggerInterface $logger = null)
     {
         $this->loader = $loader ?? new ClassLoader();
-        $this->logger = $logger;
+        if ($logger) $this->setLogger($logger);
 
         $this->root = $root ?? getcwd();
 
@@ -59,7 +60,15 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
-            $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
+            try {
+                $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"]);
+                if ($logger) $db->setLogger($logger);
+            } catch (PDOException $e) {
+                if ($this->logger) {
+                    $this->logger->error($e->getMessage());
+                }
+                throw new Exception("SQLSTATE[HY000] [1045] Access denied");
+            }
 
             if (isset($db["ERRMODE"])) {
                 $this->db->setAttribute(\PDO::ATTR_ERRMODE, $db["ERRMODE"]);
