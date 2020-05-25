@@ -32,5 +32,8 @@
             "name": "Raymond Chong",
             "email": "raymond@hostlink.com.hk"
         }
-    ]
+    ],
+    "scripts": {
+        "test": "phpunit tests"
+    }
 }

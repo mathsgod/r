@@ -60,8 +60,12 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
+            if (!$db["port"]) {
+                $db["port"] = 3306;
+            }
+
             try {
-                $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"]);
+                $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $db["port"]);
                 if ($logger) $db->setLogger($logger);
             } catch (PDOException $e) {
                 if ($this->logger) {
