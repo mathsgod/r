@@ -1,4 +1,4 @@
-<?
+<?php
 
 class _index extends R\Page
 {
