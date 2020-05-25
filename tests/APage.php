@@ -1,4 +1,4 @@
-<?
+<?php
 
 class APage extends R\Page
 {

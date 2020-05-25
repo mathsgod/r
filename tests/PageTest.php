@@ -1,4 +1,4 @@
-<?
+<?php
 
 declare(strict_types=1);
 error_reporting(E_ALL && ~E_WARNING);
@@ -20,6 +20,4 @@ final class PageTest extends TestCase
 
         $this->assertInstanceOf(APage::class, $page);
     }
-
-
 }
