@@ -66,7 +66,7 @@ class App implements LoggerAwareInterface
 
             try {
                 $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $db["port"]);
-                if ($logger) $db->setLogger($logger);
+                if ($logger) $this->db->setLogger($logger);
             } catch (PDOException $e) {
                 if ($this->logger) {
                     $this->logger->error($e->getMessage());
