@@ -2,6 +2,7 @@
 
 namespace R;
 
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use R\Psr7\Stream;
@@ -14,7 +15,7 @@ abstract class Page
     public $root;
 
     /**
-     * @var \Psr\Http\Message\ServerRequestInterface
+     * @var \Psr\Http\Message\RequestInterface
      */
     protected $request;
 
@@ -36,7 +37,7 @@ abstract class Page
         $this->response->getBody()->write($element);
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->request = $request;
         $this->response = $response;
@@ -45,7 +46,13 @@ abstract class Page
 
         $r_class = new \ReflectionClass(get_called_class());
 
-        $params = $this->request->getQueryParams();
+
+        if ($request instanceof ServerRequestInterface) {
+            $params = $request->getQueryParams();
+        } else {
+            $params = $request->getUri()->getQuery();
+        }
+
         try {
             $data = [];
             if ($method == "__invoke" || $method == "write") {
