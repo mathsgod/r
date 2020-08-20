@@ -14,8 +14,8 @@
     },
     "require": {
         "php": ">=7.0",
-        "mathsgod/r-psr7": "2.*",
-        "psr/log": "*"
+        "psr/log": "*",
+        "mathsgod/r-psr7": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
