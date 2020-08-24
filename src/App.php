@@ -11,7 +11,9 @@ use PHP\Psr7\JsonStream;
 use PHP\Psr7\StringStream;
 use PHP\Psr7\Response;
 use PHP\Psr7\ServerRequest;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 
 class App implements LoggerAwareInterface
 {
@@ -102,6 +104,10 @@ class App implements LoggerAwareInterface
 
             try {
                 $response = $page($request, $response);
+                if (!$response instanceof ResponseInterface) {
+                    throw new RuntimeException("page invoke must be ResponseInterface");
+                    return;
+                }
             } catch (Exception $e) {
                 if ($request->getHeader("Accept")[0] == "application/json") {
                     $response = $response->withHeader("Content-Type", "application/json; charset=UTF-8");
@@ -127,7 +133,8 @@ class App implements LoggerAwareInterface
             foreach ($response->getHeaders() as $header) {
                 header($header);
             }
-            file_put_contents("php://output", (string) $response->getBody());
+
+            fwrite(fopen("php://output", "w"), $response->getBody());
         }
     }
 }
