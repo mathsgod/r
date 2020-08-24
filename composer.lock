@@ -4,37 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08803cba945cafef44162de1eb6ec165",
+    "content-hash": "bbc5c31cb8143f29f2fd10464f27d72f",
     "packages": [
         {
-            "name": "mathsgod/r-psr7",
-            "version": "2.4.0",
+            "name": "mathsgod/php-psr7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
-                "url": "https://mathsgod:d97ca44a017f09f662c0761828b0f66caf373415@github.com/mathsgod/r-psr7.git",
-                "reference": "4f39c078b1bd7b914ec462a5aa2bfb886ae399ed"
+                "url": "https://github.com/mathsgod/php-psr7.git",
+                "reference": "59013aad77416d901abd1070b662fadd153ab38b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mathsgod/php-psr7/zipball/59013aad77416d901abd1070b662fadd153ab38b",
+                "reference": "59013aad77416d901abd1070b662fadd153ab38b",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
-                "psr/http-message": "1.*"
+                "psr/http-message": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "^6.5"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "R\\Psr7\\": "src/"
+                    "PHP\\Psr7\\": "src/"
                 },
                 "files": [
                     "function/function.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "proprietary"
+                "MIT"
             ],
-            "description": "psr7",
-            "time": "2020-02-07T09:55:41+00:00"
+            "authors": [
+                {
+                    "name": "Raymond Chong",
+                    "email": "mathsgod@yahoo.com"
+                }
+            ],
+            "description": "A standard implementation of php psr7",
+            "time": "2020-08-24T07:24:19+00:00"
         },
         {
             "name": "psr/http-message",
@@ -897,6 +910,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2017-11-27T05:48:46+00:00"
         },
         {

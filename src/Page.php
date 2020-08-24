@@ -2,11 +2,11 @@
 
 namespace R;
 
+use PHP\Psr7\JsonStream;
+use PHP\Psr7\StringStream;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use R\Psr7\Stream;
-use R\Psr7\JSONStream;
 
 abstract class Page
 {
@@ -42,7 +42,7 @@ abstract class Page
         $this->request = $request;
         $this->response = $response;
 
-        $method = $request->getMethod();
+        $target = $request->getRequestTarget();
 
         $r_class = new \ReflectionClass(get_called_class());
 
@@ -55,11 +55,11 @@ abstract class Page
 
         try {
             $data = [];
-            if ($method == "__invoke" || $method == "write") {
-                return $this->response->withBody(new Stream("cannot use method: $method"));
+            if ($target == "__invoke" || $target == "write") {
+                return $this->response->withBody(new StringStream("cannot use method: $target"));
             };
 
-            foreach ($r_class->getMethod($method)->getParameters() as $param) {
+            foreach ($r_class->getMethod($target)->getParameters() as $param) {
                 $name = $param->name;
 
                 if (isset($params[$name])) {
@@ -72,16 +72,15 @@ abstract class Page
                     }
                 }
             }
-            $ret = call_user_func_array([$this, $method], $data);
+            $ret = call_user_func_array([$this, $target], $data);
         } catch (\ReflectionException $e) {
-            $ret = call_user_func_array([$this, $method], $params);
+            $ret = call_user_func_array([$this, $target], $params);
         }
 
         if ($ret !== null) {
-            $this->response = $this->response->withHeader("Content-Type", "application/json; charset=UTF-8");
-            $body = new JSONStream();
-            $body->write($ret);
-            return $this->response->withBody($body);
+            $this->response =  $this->response
+                ->withHeader("Content-Type", "application/json; charset=UTF-8")
+                ->withBody(new JsonStream($ret));
         }
 
         return $this->response;

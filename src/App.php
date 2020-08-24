@@ -3,12 +3,14 @@
 namespace R;
 
 use Composer\Autoload\ClassLoader;
-use R\Psr7\ServerRequest;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
-use R\Psr7\Stream;
 use Exception;
 use PDOException;
+use PHP\Psr7\JsonStream;
+use PHP\Psr7\StringStream;
+use PHP\Psr7\Response;
+use PHP\Psr7\ServerRequest;
 use Psr\Log\LoggerAwareTrait;
 
 class App implements LoggerAwareInterface
@@ -37,8 +39,11 @@ class App implements LoggerAwareInterface
         $this->loader->addPsr4("", $this->root . DIRECTORY_SEPARATOR . "class");
         $this->loader->register();
 
-        $this->request = ServerRequest::FromEnv();
-        $this->base_path = $this->request->getUri()->getBasePath();
+        $this->request = new ServerRequest;
+
+        $server = $this->request->getServerParams();
+        //base path
+        $this->base_path = dirname($server["SCRIPT_NAME"]);
         $this->document_root = substr($this->root, 0, -strlen($this->base_path));
 
         if (is_readable($ini = $this->root . DIRECTORY_SEPARATOR . "config.ini")) {
@@ -80,18 +85,18 @@ class App implements LoggerAwareInterface
 
             Model::$db = $this->db;
         }
-        $this->router = new Router($this->root);
+        $this->router = new Router($this);
     }
 
     public function run()
     {
-        $route = $this->router->getRoute($this->request, $this->loader);
-        $request = $this->request->withAttribute("route", $route);
+        $route = $this->router->getRoute($this->request);
+
+        $request = $this->request->withRequestTarget($route->method);
 
         if ($class = $route->class) {
             $page = new $class($this);
-            $response = new Psr7\Response(200);
-            $request = $request->withMethod($route->method);
+            $response = new Response(200);
 
             if ($this->logger) $this->logger->debug($class . " invoke start");
 
@@ -105,10 +110,11 @@ class App implements LoggerAwareInterface
                     } else {
                         $ret = ["error" => ["message" => $e->getMessage()]];
                     }
-                    $response = $response->withBody(new Stream(json_encode($ret, JSON_UNESCAPED_UNICODE)));
+                    $response = $response->withBody(new JsonStream($ret));
                 } else {
-                    $response = $response->withHeader("Content-Type", "text/html; charset=UTF-8")
-                        ->withBody(new Stream($e->getMessage()));
+                    $response = $response
+                        ->withHeader("Content-Type", "text/html; charset=UTF-8")
+                        ->withBody(new StringStream($e->getMessage()));
                 }
             }
 
@@ -118,10 +124,10 @@ class App implements LoggerAwareInterface
                 header($request->getServerParams()["SERVER_PROTOCOL"] . " " . $statusCode . " " . $response->getReasonPhrase());
             }
 
-            foreach ($response->getHeaders() as $name => $values) {
-                header($name . ": " . implode(", ", $values));
+            foreach ($response->getHeaders() as $header) {
+                header($header);
             }
-            file_put_contents("php://output", (string) $response);
+            file_put_contents("php://output", (string) $response->getBody());
         }
     }
 }

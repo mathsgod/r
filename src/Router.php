@@ -8,10 +8,9 @@ use Psr\Http\Message\RequestInterface;
 class Router
 {
     public $route = [];
-    public $root;
-    public function __construct(string $root)
+    public function __construct(App $app)
     {
-        $this->root = $root;
+        $this->app = $app;
     }
 
     public function add($method, $path, $params)
@@ -24,7 +23,7 @@ class Router
         return $this->route[] = $callable;
     }
 
-    public function getRoute(RequestInterface $request, ClassLoader $loader)
+    public function getRoute(RequestInterface $request)
     {
         $path = $request->getUri()->getPath();
 
@@ -36,11 +35,11 @@ class Router
         $method = $request->getMethod();
         foreach ($this->route as $route) {
             if (is_callable($route)) {
-                if ($r = $route($request, $loader)) {
+                if ($r = $route($request, $this->app)) {
                     return $r;
                 }
             } elseif ($method == $route["method"] && $path == $route["path"]) {
-                $r = new Route($request, $loader, $this->root);
+                $r = new Route($request, $this->app);
 
                 $r->path = $path;
                 $r->uri = (string) $request->getURI();
@@ -50,13 +49,13 @@ class Router
                 parse_str($request->getURI()->getQuery(), $r->query);
                 $r->file = $this->root . "/" . $route["params"]["file"];
 
-                $loader->addClassMap([
+                $this->loader->addClassMap([
                     $r->class => $r->file
                 ]);
 
                 return $r;
             }
         }
-        return new Route($request, $loader, $this->root);
+        return new Route($request, $this->app);
     }
 }
