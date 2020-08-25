@@ -8,20 +8,19 @@
     "packages": [
         {
             "name": "mathsgod/php-psr7",
-            "version": "1.0.8",
+            "version": "1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathsgod/php-psr7.git",
-                "reference": "59013aad77416d901abd1070b662fadd153ab38b"
+                "reference": "8b6b293cab9c1f824ca3b40472f1f7b135868405"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathsgod/php-psr7/zipball/59013aad77416d901abd1070b662fadd153ab38b",
-                "reference": "59013aad77416d901abd1070b662fadd153ab38b",
+                "url": "https://api.github.com/repos/mathsgod/php-psr7/zipball/8b6b293cab9c1f824ca3b40472f1f7b135868405",
+                "reference": "8b6b293cab9c1f824ca3b40472f1f7b135868405",
                 "shasum": ""
             },
             "require": {
-                "mathsgod/php-psr7": "^1.0",
                 "php": ">=7.0",
                 "psr/http-message": "^1.0"
             },
@@ -37,15 +36,7 @@
                     "function/function.php"
                 ]
             },
-<<<<<<< HEAD
-            "scripts": {
-                "test": [
-                    "phpunit tests"
-                ]
-            },
-=======
             "notification-url": "https://packagist.org/downloads/",
->>>>>>> 3082ae36a3985e09e0ce7c50136bea56facf66bf
             "license": [
                 "MIT"
             ],
@@ -55,13 +46,8 @@
                     "email": "mathsgod@yahoo.com"
                 }
             ],
-<<<<<<< HEAD
-            "description": "psr7",
-            "time": "2020-08-20T04:18:17+00:00"
-=======
             "description": "A standard implementation of php psr7",
-            "time": "2020-08-24T07:24:19+00:00"
->>>>>>> 3082ae36a3985e09e0ce7c50136bea56facf66bf
+            "time": "2020-08-25T03:06:11+00:00"
         },
         {
             "name": "psr/http-message",
@@ -1798,9 +1784,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "mathsgod/r-psr7": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
