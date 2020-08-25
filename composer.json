@@ -15,7 +15,7 @@
     "require": {
         "php": ">=7.0",
         "psr/log": "*",
-        "mathsgod/r-psr7": "dev-master"
+        "mathsgod/php-psr7": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

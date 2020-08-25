@@ -4,23 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82639364cfbbe1a3602ac1d2641d3220",
+    "content-hash": "bbc5c31cb8143f29f2fd10464f27d72f",
     "packages": [
         {
             "name": "mathsgod/php-psr7",
-            "version": "1.0.0",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathsgod/php-psr7.git",
-                "reference": "dafb5360d402fd2ddc3663f6d8827025859f21b6"
+                "reference": "59013aad77416d901abd1070b662fadd153ab38b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathsgod/php-psr7/zipball/dafb5360d402fd2ddc3663f6d8827025859f21b6",
-                "reference": "dafb5360d402fd2ddc3663f6d8827025859f21b6",
+                "url": "https://api.github.com/repos/mathsgod/php-psr7/zipball/59013aad77416d901abd1070b662fadd153ab38b",
+                "reference": "59013aad77416d901abd1070b662fadd153ab38b",
                 "shasum": ""
             },
             "require": {
+                "mathsgod/php-psr7": "^1.0",
                 "php": ">=7.0",
                 "psr/http-message": "^1.0"
             },
@@ -36,7 +37,15 @@
                     "function/function.php"
                 ]
             },
+<<<<<<< HEAD
+            "scripts": {
+                "test": [
+                    "phpunit tests"
+                ]
+            },
+=======
             "notification-url": "https://packagist.org/downloads/",
+>>>>>>> 3082ae36a3985e09e0ce7c50136bea56facf66bf
             "license": [
                 "MIT"
             ],
@@ -46,44 +55,13 @@
                     "email": "mathsgod@yahoo.com"
                 }
             ],
-            "description": "A standard implementation of php psr7",
-            "time": "2020-08-20T04:13:51+00:00"
-        },
-        {
-            "name": "mathsgod/r-psr7",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://mathsgod:d97ca44a017f09f662c0761828b0f66caf373415@github.com/mathsgod/r-psr7.git",
-                "reference": "5c14fa6a3f93e67ae7162aa783882eb491e3f8b2"
-            },
-            "require": {
-                "mathsgod/php-psr7": "^1.0",
-                "php": ">=7.0",
-                "psr/http-message": "1.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "R\\Psr7\\": "src/"
-                },
-                "files": [
-                    "function/function.php"
-                ]
-            },
-            "scripts": {
-                "test": [
-                    "phpunit tests"
-                ]
-            },
-            "license": [
-                "proprietary"
-            ],
+<<<<<<< HEAD
             "description": "psr7",
             "time": "2020-08-20T04:18:17+00:00"
+=======
+            "description": "A standard implementation of php psr7",
+            "time": "2020-08-24T07:24:19+00:00"
+>>>>>>> 3082ae36a3985e09e0ce7c50136bea56facf66bf
         },
         {
             "name": "psr/http-message",

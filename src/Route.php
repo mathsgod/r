@@ -18,13 +18,15 @@ class Route
     public $type;
     public $root;
 
-    public function __construct(RequestInterface $request, ClassLoader $loader, string $root)
+    public function __construct(RequestInterface $request, App $app)
     {
-        $this->root = $root;
+        $this->root = $app->root;
+        $loader = $app->loader;
 
         $uri = $request->getUri();
         $this->uri = (string) $uri;
-        $this->path = $uri->getPath();
+        $base_path = $app->base_path;
+        $this->path = substr($uri->getPath(), strlen($base_path));
 
         $this->method = strtolower($request->getMethod());
         parse_str($uri->getQuery(), $this->query);
@@ -56,7 +58,7 @@ class Route
             $this->path .= "index";
         }
 
-        $this->psr0($request, $loader);
+        $this->psr0($request, $app);
 
 
         if (file_exists($this->file)) {
