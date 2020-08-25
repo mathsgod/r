@@ -111,10 +111,9 @@ class App implements LoggerAwareInterface
             } catch (Exception $e) {
                 if ($request->getHeader("Accept")[0] == "application/json") {
                     $response = $response->withHeader("Content-Type", "application/json; charset=UTF-8");
+                    $ret = ["error" => ["message" => $e->getMessage()]];
                     if ($code = $e->getCode()) {
-                        $ret = ["error" => ["code" => $code, "message" => $e->getMessage()]];
-                    } else {
-                        $ret = ["error" => ["message" => $e->getMessage()]];
+                        $ret["error"]["code"] = $code;
                     }
                     $response = $response->withBody(new JsonStream($ret));
                 } else {
@@ -130,8 +129,10 @@ class App implements LoggerAwareInterface
                 header($request->getServerParams()["SERVER_PROTOCOL"] . " " . $statusCode . " " . $response->getReasonPhrase());
             }
 
-            foreach ($response->getHeaders() as $header) {
-                header($header);
+
+
+            foreach ($response->getHeaders() as $name => $values) {
+                header($response->getHeaderLine($name));
             }
 
             fwrite(fopen("php://output", "w"), $response->getBody());
