@@ -38,7 +38,7 @@ class App implements LoggerAwareInterface
 
         $this->root = $root ?? getcwd();
 
-        $this->loader->addPsr4("", $this->root . DIRECTORY_SEPARATOR . "class");
+        $this->loader->addPsr4("", $this->root . DIRECTORY_SEPARATOR . "class", true);
         $this->loader->register();
 
         $this->request = new ServerRequest;
