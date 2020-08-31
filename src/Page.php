@@ -4,7 +4,6 @@ namespace R;
 
 use PHP\Psr7\JsonStream;
 use PHP\Psr7\StringStream;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -15,12 +14,12 @@ abstract class Page
     public $root;
 
     /**
-     * @var \Psr\Http\Message\RequestInterface
+     * @var ServerRequestInterface
      */
     protected $request;
 
     /**
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -37,24 +36,14 @@ abstract class Page
         $this->response->getBody()->write($element);
     }
 
-    /**
-     * @param ServerRequestInterface|RequestInterface $request
-     */
-    public function __invoke(RequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->request = $request;
         $this->response = $response;
 
         $target = $request->getRequestTarget();
-
         $r_class = new \ReflectionClass(get_called_class());
-
-
-        if ($request instanceof ServerRequestInterface) {
-            $params = $request->getQueryParams();
-        } else {
-            $params = $request->getUri()->getQuery();
-        }
+        $params = $request->getQueryParams();
 
         try {
             $data = [];
