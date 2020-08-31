@@ -46,6 +46,10 @@ class App implements LoggerAwareInterface
         $server = $this->request->getServerParams();
         //base path
         $this->base_path = dirname($server["SCRIPT_NAME"]);
+        if (substr($this->base_path, -1) != "/") {
+            $this->base_path .= "/";
+        }
+
         $this->document_root = substr($this->root, 0, -strlen($this->base_path));
 
         if (is_readable($ini = $this->root . DIRECTORY_SEPARATOR . "config.ini")) {
