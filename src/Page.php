@@ -37,6 +37,9 @@ abstract class Page
         $this->response->getBody()->write($element);
     }
 
+    /**
+     * @param ServerRequestInterface|RequestInterface $request
+     */
     public function __invoke(RequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->request = $request;
