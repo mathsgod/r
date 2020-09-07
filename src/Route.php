@@ -25,8 +25,7 @@ class Route
 
         $uri = $request->getUri();
         $this->uri = (string) $uri;
-        $base_path = $app->base_path;
-        $this->path = substr($uri->getPath(), strlen($base_path));
+        $this->path = $request->getUri()->getPath();
 
         $this->method = strtolower($request->getMethod());
         parse_str($uri->getQuery(), $this->query);

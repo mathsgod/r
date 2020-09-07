@@ -92,6 +92,18 @@ class App implements LoggerAwareInterface
             Model::$db = $this->db;
         }
         $this->router = new Router($this);
+
+
+        if ($this->request->getMethod() == "POST") {
+            if (strpos($this->request->getHeaderLine("Content-Type"), "application/json") !== false) {
+                $_POST = $this->request->getParsedBody();
+            }
+        }
+
+        $uri = $this->request->getUri();
+        $path = substr($uri->getPath(), strlen($this->base_path));
+        $uri = $uri->withPath($path);
+        $this->request = $this->request->withUri($uri);
     }
 
     public function run()
