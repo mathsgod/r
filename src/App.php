@@ -147,10 +147,8 @@ class App implements LoggerAwareInterface
                 header($request->getServerParams()["SERVER_PROTOCOL"] . " " . $statusCode . " " . $response->getReasonPhrase());
             }
 
-
-
             foreach ($response->getHeaders() as $name => $values) {
-                header($response->getHeaderLine($name));
+                header($name . ": " . $response->getHeaderLine($name));
             }
 
             fwrite(fopen("php://output", "w"), $response->getBody());
