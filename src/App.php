@@ -50,7 +50,7 @@ class App implements LoggerAwareInterface
             $this->base_path .= "/";
         }
 
-        $this->document_root = substr($this->root, 0, -strlen($this->base_path));
+        $this->document_root = substr($this->root."/", 0, -strlen($this->base_path));
 
         if (is_readable($ini = $this->root . DIRECTORY_SEPARATOR . "config.ini")) {
             $this->config = parse_ini_file($ini, true);
