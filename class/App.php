@@ -42,7 +42,9 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
-            $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $db["port"]);
+            $port = $db["port"] ? $db["port"] : 3306;
+
+            $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $port);
             if ($this->logger) {
                 $this->db->setLogger($this->logger);
             }
