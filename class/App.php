@@ -1,4 +1,5 @@
-<?
+<?php
+
 namespace R;
 
 use R\Psr7\ServerRequest;
@@ -41,7 +42,11 @@ class App implements LoggerAwareInterface
                 $db["charset"] = "utf8mb4";
             }
 
-            $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $this->logger);
+            $this->db = new \R\DB\Schema($db["database"], $db["hostname"], $db["username"], $db["password"], $db["charset"], $db["port"]);
+            if ($this->logger) {
+                $this->db->setLogger($this->logger);
+            }
+
 
             if (isset($db["ERRMODE"])) {
                 $this->db->setAttribute(\PDO::ATTR_ERRMODE, $db["ERRMODE"]);
@@ -95,5 +100,4 @@ class App implements LoggerAwareInterface
     {
         $this->logger = $logger;
     }
-
 }
