@@ -45,29 +45,34 @@ abstract class Page
         $r_class = new \ReflectionClass(get_called_class());
         $params = $request->getQueryParams();
 
-        try {
-            $data = [];
-            if ($target == "__invoke" || $target == "write") {
-                return $this->response->withBody(new StringStream("cannot use method: $target"));
-            };
+        if ($r_class->hasMethod($target)) {
+            try {
+                $data = [];
+                if ($target == "__invoke" || $target == "write") {
+                    return $this->response->withBody(new StringStream("cannot use method: $target"));
+                };
 
-            foreach ($r_class->getMethod($target)->getParameters() as $param) {
-                $name = $param->name;
+                foreach ($r_class->getMethod($target)->getParameters() as $param) {
+                    $name = $param->name;
 
-                if (isset($params[$name])) {
-                    $data[] = $params[$name];
-                } else {
-                    if ($param->isDefaultValueAvailable()) {
-                        $data[] = $param->getDefaultValue();
+                    if (isset($params[$name])) {
+                        $data[] = $params[$name];
                     } else {
-                        $data[] = null;
+                        if ($param->isDefaultValueAvailable()) {
+                            $data[] = $param->getDefaultValue();
+                        } else {
+                            $data[] = null;
+                        }
                     }
                 }
+                $ret = call_user_func_array([$this, $target], $data);
+            } catch (\ReflectionException $e) {
+                $ret = call_user_func_array([$this, $target], $params);
             }
-            $ret = call_user_func_array([$this, $target], $data);
-        } catch (\ReflectionException $e) {
-            $ret = call_user_func_array([$this, $target], $params);
+        } else {
+            $ret = null;
         }
+
 
         if ($ret !== null) {
             $this->response =  $this->response
