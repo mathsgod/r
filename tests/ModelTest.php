@@ -1,7 +1,8 @@
-<?
+<?php
 
-declare (strict_types = 1);
-error_reporting(E_ALL && ~E_WARNING);
+declare(strict_types=1);
+error_reporting(E_ALL & ~E_WARNING);
+
 use PHPUnit\Framework\TestCase;
 
 use R\App;
@@ -16,14 +17,14 @@ final class ModelTest extends TestCase
         $this->assertEquals($t->testing_id, Testing::Scalar("max(testing_id)"));
     }
 
-    
 
-      //  public function test_first()
-   // {
-//        print_r(Testing::First());
+
+    //  public function test_first()
+    // {
+    //        print_r(Testing::First());
     //}
 
-/*    public function test_first()
+    /*    public function test_first()
     {
 
         $t = new Testing();
@@ -74,7 +75,4 @@ final class ModelTest extends TestCase
         $this->assertTrue(is_array($attr));
         $this->assertTrue(sizeof($attr) > 0);
     }
-
-
-
 }

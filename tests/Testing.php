@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Testing extends R\ORM\Model
 {

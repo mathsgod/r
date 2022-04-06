@@ -1,7 +1,8 @@
-<?
+<?php
 
-declare (strict_types = 1);
-error_reporting(E_ALL && ~E_WARNING);
+declare(strict_types=1);
+error_reporting(E_ALL & ~E_WARNING);
+
 use PHPUnit\Framework\TestCase;
 
 use R\Set;
@@ -13,7 +14,6 @@ final class SetTest extends TestCase
     {
         $set = new Set([1, 2, 3]);
         $this->assertInstanceOf(Set::class, $set);
-
     }
 
     public function test_isSubsetOf()
@@ -37,32 +37,35 @@ final class SetTest extends TestCase
         $this->assertEquals([1, 2, 3, 4, 5], $set3);
     }
 
-    public function test_intersection(){
+    public function test_intersection()
+    {
         $set1 = new Set([1, 2, 3]);
         $set2 = new Set([3, 4, 5]);
         $set3 = $set1->intersection($set2);
         $this->assertEquals([3], (array)$set3);
     }
 
-    public function test_different(){
+    public function test_different()
+    {
         $set1 = new Set([1, 2, 3]);
         $set2 = new Set([3, 4, 5]);
         $set3 = $set1->different($set2);
-        $this->assertEquals([1,2], (array)$set3);
+        $this->assertEquals([1, 2], (array)$set3);
     }
 
-    public function test_symmetricDifferent(){
+    public function test_symmetricDifferent()
+    {
         $set1 = new Set([1, 2, 3]);
         $set2 = new Set([3, 4, 5]);
         $set3 = $set1->symmetricDifferent($set2);
         $set3 = (array)$set3;
         sort($set3);
-        $this->assertEquals([1,2,4,5], (array)$set3);
+        $this->assertEquals([1, 2, 4, 5], (array)$set3);
     }
 
-    public function test_isEmpty(){
-        $set=Set::Create([]);
+    public function test_isEmpty()
+    {
+        $set = Set::Create([]);
         $this->assertTrue($set->isEmpty());
     }
-
 }
