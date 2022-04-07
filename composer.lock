@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d64136e74c91eb8fd384e776c0aa7a9",
+    "content-hash": "b89630f73f6dcc641551e151b311a278",
     "packages": [
         {
             "name": "mathsgod/php-psr7",
