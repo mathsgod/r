@@ -94,7 +94,7 @@ class App implements LoggerAwareInterface
             foreach ($response->getHeaders() as $name => $values) {
                 header($name . ": " . implode(", ", $values));
             }
-            file_put_contents("php://output", (string)$response);
+            file_put_contents("php://output", $response->getBody()->getContents());
         }
     }
 
